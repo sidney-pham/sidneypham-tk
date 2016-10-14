@@ -1,83 +1,68 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="description" content="Welcome to Sidney's Website. It is still under construction.">
-	<title>Form Submitted!</title>
-	<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="../img/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="../css/style.css">
-	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-	<?php 
-	$connect = mysqli_connect("localhost", "root", "admin", "users");
+<?php 
+$path = $_SERVER['DOCUMENT_ROOT'] . "/includes/header.html";
+include ($path);
 
-	$username = mysqli_real_escape_string($connect, $_POST["username"]);
-	$password = mysqli_real_escape_string($connect, $_POST["password"]);
-	$password = md5($password);
-	$plainpassword = mysqli_real_escape_string($connect, $_POST["password"]);
-	$firstname = mysqli_real_escape_string($connect, $_POST["firstname"]);
-	$lastname = mysqli_real_escape_string($connect, $_POST["lastname"]);
-	$email = mysqli_real_escape_string($connect, $_POST["email"]);
-	$message = mysqli_real_escape_string($connect, $_POST["message"]);
+$connect = mysqli_connect("localhost", "root", "admin", "users");
+$username = mysqli_real_escape_string($connect, $_POST["username"]);
+$password = md5(mysqli_real_escape_string($connect, $_POST["password"]));
+$plainpassword = mysqli_real_escape_string($connect, $_POST["password"]);
+$firstname = mysqli_real_escape_string($connect, $_POST["firstname"]);
+$lastname = mysqli_real_escape_string($connect, $_POST["lastname"]);
+$email = mysqli_real_escape_string($connect, $_POST["email"]);
+$message = mysqli_real_escape_string($connect, $_POST["message"]);
 		
-	if (mysqli_connect_errno()) {
-	  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
 
-	mysqli_query($connect, "INSERT INTO users (firstname, lastname, email, username, password, message)
-	VALUES ('$firstname', '$lastname', '$email', '$username', '$password', '$message')");
+mysqli_query($connect, "INSERT INTO users (firstname, lastname, email, username, password, message)
+VALUES ('$firstname', '$lastname', '$email', '$username', '$password', '$message')");
 
-	mysqli_close($connect);
-		?>
-	<script>
-		var showPassword = function () {
-			document.getElementById("showpass").innerHTML = "<?php echo $plainpassword;?>";
+mysqli_close($connect);
+?>
+
+<script>
+var plainpassword = "<?php echo $plainpassword; ?>";
+
+$(document).ready(function() {
+	var a = 2;
+	var pw = plainpassword;
+	//even is hidden
+	$("#showpassword").click(function() {
+		
+		console.log(a%2);
+		if (a % 2 == 0) {
+			$("#showpass").hide();
+			$("#second").html(pw);
 		}
-	</script>
-</head>
-<body>
-	<div class="wrap">	
-		<a href="../">
-			<h1 class="logo">Sidney's Website</h1>
-		</a>
-		<ul class="navbar">
-			<li>
-				<a href="../">Home</a>
-			</li>
-			<li>
-				<a href="../about">About</a>
-			</li>
-			<li>
-				<a href="../experimental" title="Experimental">Experimental Page</a>
-			</li>
-			<li>
-				<a href="/randomiser" title="Randomiser">List Randomiser</a>
-			</li>
-			<li>
-				<a href="../chat" title="Chat">Chat</a>
-			</li>
-			<li>
-				<a href="../other">Other Stuff</a>
-			</li>
-		</ul>
-		<h1>Confirmation</h1>
 
-		<p>Hello, <?php echo "$firstname "."$lastname";?>!</p>
-		<p>Your username is: <?php echo "$username";?>
-		<br>
-		Your password is: <span id="showpass">Click button to show password</span>
-		</p>
-		<a onclick="showPassword()" class="button">Show password</a>		
+		else {
+			$("#showpass").show();
+			$("#second").hide();
+		}
+		a += 1;
+	});
+});
+</script>
 
-		
+<?php
+$path = $_SERVER['DOCUMENT_ROOT'] . "/includes/nav.html";
+include ($path);
+?>
 
-		<br>
-		<a href="../" class="button">Back to homepage</a>
-	
-		<footer>
-			<p>Sidney's Website</p>
-		</footer>	
+	<h1>Confirmation</h1>
 
-	</div>
-</body>
-</html>
+	<p>Hello, <?php echo "$firstname "."$lastname";?>!</p>
+	<p>Your username is: <?php echo "$username";?>
+	<br>
+	Your password is: <span id="second"></span><span id="showpass">Click button to show password</span>
+	</p>
+	<a id="showpassword" class="button">Show password</a>		
+
+	<br>
+	<a href="../" class="button">Back to homepage</a>
+
+<?php
+$path = $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.html";
+include ($path);
+?>

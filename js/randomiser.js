@@ -1,8 +1,13 @@
 var listRandomise = function () {
-	console.log("randomised");
-
 	var str = document.getElementById("list").value;
-	var results = str.split("\n");
+	var results1 = str.split("\n").map(function(s) { return String.prototype.trim.apply(s); });
+	var results = [];
+
+	for (var i = 0; i < results1.length; i++) {
+		if (results1[i]) {
+			results.push(results1[i]);
+	    }
+	}
 	var tempstorage = "";
 	var lowerresults = [];
 
@@ -34,7 +39,7 @@ var listRandomise = function () {
 		results.move(index, -1);
 	}
 
-	var temp = "Your randomised list:<br>"
+	var temp = "Your randomised list:<br>";
 	var num = 0;
 
 	if (str == "") {
@@ -49,6 +54,5 @@ var listRandomise = function () {
 	}
     
 	document.getElementById("randomised").innerHTML = temp;
-		
 
 };

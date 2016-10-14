@@ -7,13 +7,12 @@
         s.parentNode.insertBefore(po, s);
     })();
 	
-	$(document).ready(function(){
-		function signinCallback(authResult) {
+	function signinCallback(authResult) {
 		if (authResult['access_token']) {
 		    // Successfully authorized
 		    document.getElementById('signinButton').setAttribute('style', 'display: none');
 		    document.getElementById('signoutButtonList').style.display = "block";
-		    
+		    	
 		    
 		    console.log("should be inline-block now");
 		    document.getElementById('signoutButtonList').setAttribute('style', 'float: right');
@@ -23,6 +22,7 @@
 		    		"userId": "me"
 		    	}).execute(function (result) {
 		    		document.getElementById("profile").innerHTML = JSON.stringify(result, null, 2);
+		    		console.log("JSONed");
 		    		document.getElementById("userprofile").innerHTML = '<p><a href="#"><img src=\"' + result.image.url.slice(0, -2) + "80" + '\" style="display:table;margin:auto;float:right;border-radius:50%"></a></p>' + '<p style="clear:both;">Hello, ' + result.displayName + '!</p>';
 		    	});
 
@@ -48,7 +48,7 @@
 		    //   "immediate_failed" - Could not automatially log in the user
 		    console.log('There was an error: ' + authResult['error']);
 		}
-	}
+	}	
 
 	function signOut () {
 		gapi.auth.signOut();
@@ -81,5 +81,5 @@
 	}
 	// Could trigger the disconnect on a button click
 	$('#revokeButton').click(disconnectUser);
-	})   
+
     
